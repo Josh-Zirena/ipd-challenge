@@ -1,5 +1,5 @@
 const readline = require('readline');
-
+const checkFileExt = require('./supportTasks/validFile');
  
 const rl = readline.createInterface({
         input: process.stdin,
@@ -17,15 +17,14 @@ const exit = function () {
 }
 
 const ingest = function (file) {
-    if (!file) {
-        console.log('Please enter a file name.');
+
+    // The file extension must be .xlsx or .txt.
+    if (!checkFileExt(file)) {
         rl.prompt();
     } else {
-        console.log(`Searching for ${file}`);
-        rl.prompt();
+        // loadFile? processFile? parseFile?
+        console.log(`Processing ${file}....`);
     }
-    // console.log(`Searching for file ${file}`);
-    // rl.prompt();
 }
 
 let commands = {
