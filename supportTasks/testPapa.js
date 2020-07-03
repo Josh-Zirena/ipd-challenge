@@ -1,20 +1,37 @@
 const fs = require("fs");
 const papa = require("papaparse");
-// This is weird.. will need to see how to fix it..
-const file = fs.createReadStream(`${__dirname}\\test.txt`);
 
-let rawData = [];
-papa.parse(file, {
-  delimiter: "\t",
-  step: function (result) {
-    //console.log(result.data);
-    rawData.push(result.data);
-  },
-});
-
-async function test() {
-  console.log("==========");
-  console.log(rawData);
+function papaParse(fileName) {
+	let rawData = [];
+	
+	return new Promise(resolve => {
+		papa.parse(fileName, {
+			delimiter: "\t",
+			header: false,
+			step: (results) => {
+				rawData.push(results.data);
+			},
+			complete: () => {
+				resolve(rawData);
+			},
+		});	
+	})
 }
 
-test();
+async function getData(fileName) {
+	const res = await papaParse(fileName);
+	console.log(res);
+	return res;
+}
+
+function createStream(fileName) {
+    // TODO: BUG - This breaks on WINDOWS/Linux.
+    return fs.createReadStream(`${__dirname}/${fileName}`);
+}
+
+const fileStream = createStream('test.txt');
+
+getData(fileStream);
+
+
+
