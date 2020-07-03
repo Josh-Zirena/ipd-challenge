@@ -13,7 +13,10 @@ function papaParse(fileName) {
 			},
 			complete: () => {
 				resolve(rawData);
-			},
+            },
+            error: () => {
+                console.error('Could not parse this file.');
+            }
 		});	
 	})
 }
@@ -29,7 +32,7 @@ function createStream(fileName) {
     return fs.createReadStream(`${__dirname}/${fileName}`);
 }
 
-const fileStream = createStream('test.txt');
+const fileStream = createStream('bake.txt');
 
 getData(fileStream);
 
