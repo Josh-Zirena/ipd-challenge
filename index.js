@@ -23,8 +23,8 @@ const ingest = async function (file) {
     /** Check if the file exists and the extension is valid. */
     if (fileExists(file) && checkExtension(file)) {
         const data = await processData(file);
+        // BUG: Having a hard time to get papa parse to return an error.
         // TODO: Do something with the parsed data.
-
         console.log('Success');
         rl.prompt();
     } else if (!fileExists(file)) {
