@@ -1,6 +1,6 @@
 const readline = require('readline');
 const fileExists = require('./supportTasks/fileExists')
-const checkFileExt = require('./supportTasks/validFile');
+const checkExtension = require('./supportTasks/checkExtension');
  
 const rl = readline.createInterface({
         input: process.stdin,
@@ -19,23 +19,18 @@ const exit = function () {
 
 const ingest = function (file) {
 
-    // Check if file exists in the directory.
-    
-    if (fileExists(file)) {
-        console.log('Found your file!');
+    /** Check if the file exists and the extension is valid. */
+    if (fileExists(file) && checkExtension(file)) {
+        // TODO: papa parse this file.
+        console.log('I will work on your file!');
         rl.close();
-    } else {
-        console.log(`Could not find your file. ${file}`);
+    } else if (!fileExists(file)) {
+        console.log(`Could not find: ${file}.`);
+        rl.prompt();
+    } else if (!checkExtension(file)) {
+        console.log('Can only process files with extensions ending in .txt or .xlsx');
         rl.prompt();
     }
-
-    // The file extension must be .xlsx or .txt.
-    // if (!checkFileExt(file)) {
-    //     rl.prompt();
-    // } else {
-    //     // loadFile? processFile? parseFile?
-    //     console.log(`Processing ${file}....`);
-    // }
 }
 
 let commands = {
