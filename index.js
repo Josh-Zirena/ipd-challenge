@@ -1,6 +1,7 @@
 const readline = require('readline');
 const fileExists = require('./supportTasks/fileExists')
 const checkExtension = require('./supportTasks/checkExtension');
+const processData = require('./supportTasks/testPapa');
  
 const rl = readline.createInterface({
         input: process.stdin,
@@ -17,13 +18,15 @@ const exit = function () {
     rl.close();
 }
 
-const ingest = function (file) {
+const ingest = async function (file) {
 
     /** Check if the file exists and the extension is valid. */
     if (fileExists(file) && checkExtension(file)) {
-        // TODO: papa parse this file.
-        console.log('I will work on your file!');
-        rl.close();
+        const data = await processData(file);
+        // TODO: Do something with the parsed data.
+
+        console.log('Success');
+        rl.prompt();
     } else if (!fileExists(file)) {
         console.log(`Could not find: ${file}.`);
         rl.prompt();

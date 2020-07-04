@@ -7,7 +7,7 @@ function papaParse(fileName) {
 	return new Promise(resolve => {
 		papa.parse(fileName, {
 			delimiter: "\t",
-			header: false,
+			header: true,
 			step: (results) => {
 				rawData.push(results.data);
 			},
@@ -15,26 +15,21 @@ function papaParse(fileName) {
 				resolve(rawData);
             },
             error: () => {
-                console.error('Could not parse this file.');
-            }
+                console.error('Error. Could not parse this file.');
+			},
 		});	
 	})
 }
 
-async function getData(fileName) {
-	const res = await papaParse(fileName);
-	console.log(res);
-	return res;
-}
-
 function createStream(fileName) {
-    // TODO: BUG - This breaks on WINDOWS/Linux.
+    // TODO: BUG - This may break on WINDOWS/Linux.
     return fs.createReadStream(`${__dirname}/${fileName}`);
 }
 
-const fileStream = createStream('bake.txt');
+const processData = async function (fileName) {
+	const fileStream = createStream(fileName);
+	let rawData = await papaParse(fileStream)
+	return rawData;
+}
 
-getData(fileStream);
-
-
-
+module.exports = processData;
