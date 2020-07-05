@@ -26,16 +26,13 @@ function createStream(fileName) {
     return fs.createReadStream(`${__dirname}/${fileName}`);
 }
 
-const processData = async function (fileName) {
+const getData = async function (fileName) {
 	const fileStream = createStream(fileName);
 	let rawData = await papaParse(fileStream);
-	console.log('=============')
-	console.log(rawData);
 
 	fs.appendFile('tempFile.json', JSON.stringify(rawData), (err) => {
 		if (err) throw err;
 	});
-	return rawData;
 }
 
-module.exports = processData;
+module.exports = getData;
