@@ -3,6 +3,7 @@ const readline = require('readline');
 
 const fileExists = require('./supportTasks/fileExists')
 const checkExtension = require('./supportTasks/checkExtension');
+const processData = require('./supportTasks/processData');
 const parseData = require('./supportTasks/papaParse');
 const summarizeData = require('./supportTasks/summarizeData');
  
@@ -19,18 +20,16 @@ const pwdTest = function () {
 
 const exit = function () {
     // TODO: Create a test here..
-    // fs.unlink('./tempFile.json', (err) => {
-    //     if (err) throw err;
-    // });
+    fs.unlink('./tempFile.json', (err) => {
+        if (err) console.log('Could not delete tempFile.json.');
+    });
     rl.close();
 }
 
 const ingest = async function (file) {
     /** Check if the file exists and the extension is valid. */
     if (fileExists(file) && checkExtension(file)) {
-        const data = await parseData(file);
-        // BUG: Having a hard time to get papa parse to return an error.
-        // TODO: Do something with the parsed data. Create a test here.
+        processData(file);
         console.log('Success');
         rl.prompt();
     } else if (!fileExists(file)) {
