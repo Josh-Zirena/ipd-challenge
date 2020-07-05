@@ -1,5 +1,5 @@
 const papaParseData = require('./papaParse');
-const xlsxParser = require('./xlsxParser');
+//const xlsxParser = require('./xlsxParser');
 
 const processData = async function(file) {
     const ext = file.split('.')[1];
