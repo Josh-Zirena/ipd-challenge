@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const checkIfFileExists = function (fileName) {
-    const file = `${__dirname}/${fileName}`;
+    const file = `./data/${fileName}`;
 
     try {
         fs.accessSync(file, fs.constants.F_OK)

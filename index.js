@@ -20,8 +20,8 @@ const pwdTest = function () {
 
 const exit = function () {
     // TODO: Create a test here..
-    fs.unlink('./tempFile.json', (err) => {
-        if (err) console.log('Could not delete tempFile.json.');
+    fs.unlink('./tempfile.json', (err) => {
+        if (err) console.log('Could not delete tempfile.json.');
     });
     rl.close();
 }
