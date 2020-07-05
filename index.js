@@ -1,7 +1,10 @@
+const fs = require('fs');
+
 const readline = require('readline');
 const fileExists = require('./supportTasks/fileExists')
 const checkExtension = require('./supportTasks/checkExtension');
-const processData = require('./supportTasks/testPapa');
+const parseData = require('./supportTasks/papaParse');
+const summarizeData = require('./supportTasks/summarizeData');
  
 const rl = readline.createInterface({
         input: process.stdin,
@@ -15,16 +18,19 @@ const pwdTest = function () {
 }
 
 const exit = function () {
+    // TODO: Create a test here..
+    // fs.unlink('./tempFile.json', (err) => {
+    //     if (err) throw err;
+    // });
     rl.close();
 }
 
 const ingest = async function (file) {
-
     /** Check if the file exists and the extension is valid. */
     if (fileExists(file) && checkExtension(file)) {
-        const data = await processData(file);
+        const data = await parseData(file);
         // BUG: Having a hard time to get papa parse to return an error.
-        // TODO: Do something with the parsed data.
+        // TODO: Do something with the parsed data. Create a test here.
         console.log('Success');
         rl.prompt();
     } else if (!fileExists(file)) {
@@ -36,24 +42,34 @@ const ingest = async function (file) {
     }
 }
 
+const summary = async function (file) {
+    summarizeData();
+    rl.close();
+}
+
 let commands = {
     pwd: pwdTest,
     exit: exit,
     ingest: ingest,
+    summary: summary,
 };
 
 console.log('=== IDP Analytics Coding Challenge ===')
 rl.prompt();
 
 rl.on('line', (userInput) => {
+    // BUG: file names must be case sensitive.
     userInput = userInput.toLowerCase();
-    // isolate the first part of the request.
-    let command = userInput.split(' ')[0];
-    let arg1 = userInput.split(' ')[1] || '';
-    let arg2 = userInput.split(' ')[2] || '';
+    
+    // Split up the command from the arguments.
+    const command = userInput.split(' ')[0];
+    const arg1 = userInput.split(' ')[1] || '';
+    const arg2 = userInput.split(' ')[2] || '';
+    const arg3 = userInput.split(' ')[3] || '';
+
 
     if (command in commands) {
-        commands[command](arg1, arg2);
+        commands[command](arg1, arg2, arg3);
     } else {
         console.log(`Unknown command: ${command}\nExiting..\n`);
         rl.close();

@@ -28,7 +28,13 @@ function createStream(fileName) {
 
 const processData = async function (fileName) {
 	const fileStream = createStream(fileName);
-	let rawData = await papaParse(fileStream)
+	let rawData = await papaParse(fileStream);
+	console.log('=============')
+	console.log(rawData);
+
+	fs.appendFile('tempFile.json', JSON.stringify(rawData), (err) => {
+		if (err) throw err;
+	});
 	return rawData;
 }
 
