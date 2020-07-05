@@ -15,7 +15,7 @@ function papaParse(fileName) {
 				resolve(rawData);
             },
             error: () => {
-                console.error('Error. Could not parse this file.');
+                throw new Error('Error. Papa parse could not parse this file.');
 			},
 		});	
 	})
@@ -23,14 +23,14 @@ function papaParse(fileName) {
 
 function createStream(fileName) {
     // TODO: BUG - This may break on WINDOWS/Linux.
-    return fs.createReadStream(`${__dirname}/${fileName}`);
+    return fs.createReadStream(`./data/${fileName}`);
 }
 
 const getData = async function (fileName) {
 	const fileStream = createStream(fileName);
 	let rawData = await papaParse(fileStream);
 
-	fs.appendFile('tempFile.json', JSON.stringify(rawData), (err) => {
+	fs.appendFile('tempfile.json', JSON.stringify(rawData), (err) => {
 		if (err) throw err;
 	});
 }
