@@ -11,7 +11,6 @@ const readFile = function() {
     })
 }
 
-
 async function summarizeData(category = 'International', year= '2018', month='12') {
     const data = await readFile();
 

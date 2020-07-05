@@ -1,6 +1,6 @@
 const fs = require('fs');
-
 const readline = require('readline');
+
 const fileExists = require('./supportTasks/fileExists')
 const checkExtension = require('./supportTasks/checkExtension');
 const parseData = require('./supportTasks/papaParse');
