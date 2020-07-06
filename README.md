@@ -5,13 +5,16 @@ https://github.com/Josh-Zirena/ipd-challenge/issues
 
 This is basically a CLI app which can take data and quickly analyze it using Node.js on the backend.
 
-# Instructions.
+## Instructions.
 
 This application will take the following commands and be able to do create reports from the data fed to it.
 
 - Ingest <filename>
 - summary <category name> <year> <month>
 - generate_report <filename>
+  
+## Managing Input.
+Please place all data to be processed in the data folder.
 
 # Starting the application.
 
