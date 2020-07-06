@@ -4,7 +4,6 @@ const readline = require('readline');
 const fileExists = require('./supportTasks/fileExists')
 const checkExtension = require('./supportTasks/checkExtension');
 const processData = require('./supportTasks/processData');
-const parseData = require('./supportTasks/papaParse');
 const summarizeData = require('./supportTasks/summarizeData');
  
 const rl = readline.createInterface({
@@ -13,20 +12,21 @@ const rl = readline.createInterface({
         prompt: '>> '
 });
 
-const pwdTest = function () {
-    console.log(process.cwd());
-    rl.prompt();
-}
-
-const exit = function () {
-    // TODO: Create a test here..
+// TODO: Move this out of index.js
+const deleteTemp = function() {
     fs.unlink('./tempfile.json', (err) => {
         if (err) console.log('Could not delete tempfile.json.');
     });
+};
+
+const exit = function () {
+    // TODO: Create a test here..
+    deleteTemp();
     rl.close();
-}
+};
 
 const ingest = async function (file) {
+    deleteTemp();
     /** Check if the file exists and the extension is valid. */
     if (fileExists(file) && checkExtension(file)) {
         processData(file);
@@ -41,13 +41,12 @@ const ingest = async function (file) {
     }
 }
 
-const summary = async function (file) {
-    summarizeData();
-    rl.close();
+const summary = async function (category, year, month) {
+    await summarizeData(category, year, month);
+    rl.prompt();
 }
 
 let commands = {
-    pwd: pwdTest,
     exit: exit,
     ingest: ingest,
     summary: summary,
@@ -57,11 +56,8 @@ console.log('=== IDP Analytics Coding Challenge ===')
 rl.prompt();
 
 rl.on('line', (userInput) => {
-    // BUG: file names must be case sensitive.
-    userInput = userInput.toLowerCase();
-    
     // Split up the command from the arguments.
-    const command = userInput.split(' ')[0];
+    const command = userInput.split(' ')[0].toLocaleLowerCase();
     const arg1 = userInput.split(' ')[1] || '';
     const arg2 = userInput.split(' ')[2] || '';
     const arg3 = userInput.split(' ')[3] || '';

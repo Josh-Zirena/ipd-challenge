@@ -1,5 +1,4 @@
 const fs = require('fs');
-
 const file = './tempfile.json';
 
 const readFile = function() {
@@ -11,22 +10,34 @@ const readFile = function() {
     })
 }
 
-async function summarizeData(category = 'International', year= '2018', month='12') {
+async function summarizeData(category, year, month) {
     const data = await readFile();
-
     const date = `${year}-${month}`;
+
+    let selectedData = [];
+
+    // If category matches push into a new array.
+    data.forEach((transaction, i) => {
+        if (transaction.Section === category &&
+            (Object.keys(transaction).includes(`${date} Units`) || (Object.keys(transaction).includes(`${date} Gross Sales`)))) {
+            selectedData.push(transaction);
+        }
+    });
+
     let totalUnits = 0;
     let totalGrossSales = 0;
 
-    for (let transaction of data) {
-        if (transaction['Section'] === category) {
-            // Add the units
-            totalUnits += parseInt(transaction[`${date} Units`]);
-            totalGrossSales += parseInt(transaction[`${date} Gross Sales`]);
-        }
-    }
+    // If we have data in our array, show results.
+    if (selectedData.length > 0) {
+        selectedData.forEach(selectedCategory => {
 
-    console.log(`${category} - Total Units: ${totalUnits}, Total Gross Sales - $${totalGrossSales}`);
+            totalUnits += parseInt(selectedCategory[`${year}-${month} Units`]);
+            totalGrossSales += parseInt(selectedCategory[`${year}-${month} Gross Sales`]);
+        });
+        console.log(`${category} - Total Units: ${totalUnits}, Total Gross Sales - $${totalGrossSales}`);
+    } else {
+        console.log('No data available.');
+    }
 }
 
 
