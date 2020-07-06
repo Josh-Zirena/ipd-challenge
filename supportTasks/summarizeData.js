@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = './tempFile.json';
+const file = './tempfile.json';
 
 const readFile = function() {
     return new Promise ((resolve, reject) => {
