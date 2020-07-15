@@ -28,11 +28,7 @@ function createStream(fileName) {
 
 const getData = async function (fileName) {
 	const fileStream = createStream(fileName);
-	let rawData = await papaParse(fileStream);
-
-	fs.appendFile('tempfile.json', JSON.stringify(rawData), (err) => {
-		if (err) throw err;
-	});
+	return await papaParse(fileStream);
 }
 
 module.exports = getData;

@@ -3,13 +3,13 @@ const readline = require('readline');
 
 const fileExists = require('./supportTasks/fileExists')
 const checkExtension = require('./supportTasks/checkExtension');
-const processData = require('./supportTasks/processData');
+const { parseData, handleDuplicateSKUs } = require('./supportTasks/processData');
 const summarizeData = require('./supportTasks/summarizeData');
  
 const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
-        prompt: '>> '
+        prompt: '>>> '
 });
 
 // TODO: Move this out of index.js
@@ -29,8 +29,15 @@ const ingest = async function (file) {
     deleteTemp();
     /** Check if the file exists and the extension is valid. */
     if (fileExists(file) && checkExtension(file)) {
-        processData(file);
-        console.log('Success');
+
+        try {
+            const rawData = await parseData(file);
+            handleDuplicateSKUs(rawData);
+            console.log('Success');
+        } catch (err) {
+            console.log('Error');
+        }
+        
         rl.prompt();
     } else if (!fileExists(file)) {
         console.log(`Could not find: ${file}.`);
