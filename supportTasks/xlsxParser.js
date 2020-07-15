@@ -59,9 +59,11 @@ const xlsxParser = function(fileName) {
         data.push(obj);
     }
 
-    fs.appendFile('tempfile.json', JSON.stringify(data), (err) => {
-        if (err) throw err;
-    });
+    // fs.appendFile('tempfile.json', JSON.stringify(data), (err) => {
+    //     if (err) throw err;
+    // });
+
+    return data;
 }
 
 module.exports = xlsxParser;
