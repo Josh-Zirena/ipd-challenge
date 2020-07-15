@@ -92,6 +92,4 @@ const handleDuplicateSKUs = function(rawData) {
     saveToFile(final);
 };
 
-
-
 module.exports = { parseData, handleDuplicateSKUs};
